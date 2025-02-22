@@ -1,0 +1,36 @@
+.input-container {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.input-container > div {
+  display: flex;
+  width: 100%;
+}
+
+.label {
+  font-size: large;
+  font-weight: 400;
+  width: 30%;
+}
+
+.input,
+.select,
+.radio-options {
+  outline: none;
+  min-width: 70%;
+}
+
+.select option {
+  width: 100%;
+}
+
+.radio-options {
+  display: flex;
+  column-gap: 4px;
+}
+
+.error {
+  color: red;
+  font-size: small;
+}

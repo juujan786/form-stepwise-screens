@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentStep: 1,
-  formData: {},
+  personal_info: {},
+  address_info: {},
   loading: false,
   error: null,
 };
@@ -16,7 +17,10 @@ const formStepperSlice = createSlice({
       state.currentStep = action.payload;
     },
     updateData: (state, action) => {
-      state.formData = { ...state.formData, ...action.payload };
+      state[action.payload.current] = {
+        ...state[action.payload.current],
+        ...action.payload.data,
+      };
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -27,5 +31,6 @@ const formStepperSlice = createSlice({
   },
 });
 
-export const { goToStep, updateData, setLoading, setError } = formStepperSlice.actions;
+export const { goToStep, updateData, setLoading, setError } =
+  formStepperSlice.actions;
 export default formStepperSlice.reducer;

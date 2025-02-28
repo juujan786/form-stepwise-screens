@@ -19,7 +19,7 @@
 
 // async function saveFormData(data) {
 //   console.log("Saving data:", data);
-//   return new Promise(resolve => 
+//   return new Promise(resolve =>
 //     setTimeout(() => resolve({ success: true }), 1000)
 //   );
 // }
@@ -35,15 +35,15 @@
 
 //   const handleNavigation = async (direction) => {
 //     dispatch({ type: 'SET_LOADING', payload: true });
-    
+
 //     try {
 //       if (direction === 'next') {
 //         const isValid = await methods.trigger();
 //         if (!isValid) return;
-        
+
 //         // Update global form data
-//         dispatch({ 
-//           type: 'UPDATE_DATA', 
+//         dispatch({
+//           type: 'UPDATE_DATA',
 //           payload: methods.getValues()
 //         });
 //       }
@@ -71,7 +71,7 @@
 //       <FormProvider {...methods}>
 //         <form onSubmit={methods.handleSubmit(() => handleNavigation('next'))}>
 //           {children}
-          
+
 //           <div style={buttonContainerStyle}>
 //             <button
 //               type="button"
@@ -80,7 +80,7 @@
 //             >
 //               Previous
 //             </button>
-            
+
 //             <button
 //               type="submit"
 //               disabled={state.loading}
@@ -108,8 +108,6 @@
 
 // export default StepsLayout;
 
-
-
 import { useSelector, useDispatch } from "react-redux";
 import { updateData, setLoading, setError } from "../store/formStepperSlice";
 import { useForm, FormProvider } from "react-hook-form";
@@ -117,16 +115,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-async function saveFormData(data) {
-  console.log("Saving data:", data);
-  return new Promise((resolve) =>
-    setTimeout(() => resolve({ success: true }), 1000)
-  );
-}
-
-function StepsLayout({ title, current, next, previous, children, validationSchema }) {
+function StepsLayout({
+  title,
+  current,
+  next,
+  previous,
+  children,
+  validationSchema,
+  formData,
+  saveFormData,
+}) {
   const dispatch = useDispatch();
-  const { formData, loading, error } = useSelector((state) => state.formStepper);
+  const { loading, error } = useSelector((state) => state.formStepper);
   const methods = useForm({
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     defaultValues: formData,
@@ -141,7 +141,7 @@ function StepsLayout({ title, current, next, previous, children, validationSchem
         const isValid = await methods.trigger();
         if (!isValid) return;
 
-        dispatch(updateData(methods.getValues()));
+        dispatch(updateData({ current, data: methods.getValues() }));
       }
 
       await saveFormData(formData);
@@ -167,8 +167,18 @@ function StepsLayout({ title, current, next, previous, children, validationSchem
         <form onSubmit={methods.handleSubmit(() => handleNavigation("next"))}>
           {children}
 
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "2rem" }}>
-            <button type="button" onClick={() => handleNavigation("prev")} disabled={current === "personal-info" || loading}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "2rem",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => handleNavigation("prev")}
+              disabled={current === "personal-info" || loading}
+            >
               Previous
             </button>
 
@@ -192,7 +202,7 @@ StepsLayout.propTypes = {
   next: PropTypes.string,
   children: PropTypes.node.isRequired,
   validationSchema: PropTypes.object,
+  formData: PropTypes.object,
 };
 
 export default StepsLayout;
-

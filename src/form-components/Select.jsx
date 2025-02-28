@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-const Select = ({ label, options, name, placeholder }) => {
+const Select = ({ label, options, name, placeholder, onChange }) => {
   const {
     register,
     formState: { errors },
@@ -12,11 +12,16 @@ const Select = ({ label, options, name, placeholder }) => {
         <label className="label" htmlFor={name}>
           {label}
         </label>
-        <select {...register(name)} className="select" name={name}>
+        <select
+          {...register(name)}
+          className="select"
+          name={name}
+          onChange={onChange}
+        >
           <option defaultChecked value="">
             {placeholder}
           </option>
-          {options.map((option, index) => (
+          {options?.map((option, index) => (
             <option key={index} value={option}>
               {option}
             </option>

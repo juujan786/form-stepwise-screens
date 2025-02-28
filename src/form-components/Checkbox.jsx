@@ -12,7 +12,7 @@ const CheckboxInput = ({ label, name, options }) => {
       <div>
         <label className="label">{label}</label>
         <div className="checkbox-options">
-          {options.map((option) => (
+          {options?.map((option) => (
             <label key={option} className="checkbox-option">
               <input
                 {...register("skills", { required: "Select at least one" })}

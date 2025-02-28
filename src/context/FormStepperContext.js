@@ -1,5 +1,5 @@
 // src/context/FormStepperContext.js
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from "react";
 
 const FormStepperContext = createContext();
 
@@ -12,13 +12,13 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'GO_TO_STEP':
+    case "GO_TO_STEP":
       return { ...state, currentStep: action.payload };
-    case 'UPDATE_DATA':
+    case "UPDATE_DATA":
       return { ...state, formData: { ...state.formData, ...action.payload } };
-    case 'SET_LOADING':
+    case "SET_LOADING":
       return { ...state, loading: action.payload };
-    case 'SET_ERROR':
+    case "SET_ERROR":
       return { ...state, error: action.payload };
     default:
       return state;
@@ -27,7 +27,7 @@ function reducer(state, action) {
 
 export function FormStepperProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  
+
   return (
     <FormStepperContext.Provider value={{ state, dispatch }}>
       {children}
